@@ -1,4 +1,4 @@
-# <img src="/.addons/nine_patch_sprite_2d/nine_patch_sprite_2d.svg" width="24px"> NinePatchSprite2D
+# <img src="./icon.svg" width="24px"> NinePatchSprite2D
 
 A Node2D that displays a texture by keeping its corners intact, but tiling its edges and center.
 
