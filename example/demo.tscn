@@ -14,14 +14,22 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="Demo" type="Node"]
+[node name="Demo" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Box" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(0, 64)
-offset_left = 96.0
-offset_top = 73.0
-offset_right = 1056.0
-offset_bottom = 137.0
+offset_left = -480.0
+offset_top = -251.0
+offset_right = 480.0
+offset_bottom = -187.0
 theme_override_constants/separation = 96
 alignment = 1
 metadata/_edit_lock_ = true
@@ -61,7 +69,7 @@ metadata/_edit_lock_ = true
 
 [node name="Stretch" type="Node2D" parent="."]
 texture_filter = 1
-position = Vector2(224, 384)
+position = Vector2(-352, 60)
 script = ExtResource("1_hdqo7")
 texture = ExtResource("2_ht6g7")
 size = Vector2(256, 384)
@@ -73,7 +81,7 @@ patch_margin_bottom = 32.0
 
 [node name="Tile" type="Node2D" parent="."]
 texture_filter = 1
-position = Vector2(576, 384)
+position = Vector2(0, 60)
 script = ExtResource("1_hdqo7")
 texture = ExtResource("2_ht6g7")
 size = Vector2(256, 384)
@@ -87,7 +95,7 @@ axis_stretch_vertical = 1
 
 [node name="TileFit" type="Node2D" parent="."]
 texture_filter = 1
-position = Vector2(928, 384)
+position = Vector2(352, 60)
 script = ExtResource("1_hdqo7")
 texture = ExtResource("2_ht6g7")
 size = Vector2(256, 384)

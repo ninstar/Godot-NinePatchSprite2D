@@ -11,14 +11,10 @@ config_version=5
 [application]
 
 config/name="NinePatchSprite2D"
-config/features=PackedStringArray("4.2", "GL Compatibility")
+config/description="A Node2D that displays a texture by keeping its corners intact, but tiling its edges and center."
+run/main_scene="res://example/demo.tscn"
 config/icon="res://icon.svg"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/nine_patch_sprite_2d/plugin.cfg")
-
-[rendering]
-
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
