@@ -12,7 +12,7 @@ config_version=5
 
 config/name="NinePatchSprite2D"
 config/description="A Node2D that displays a texture by keeping its corners intact, but tiling its edges and center."
-run/main_scene="res://example/demo.tscn"
+run/main_scene="res://example/scene.tscn"
 config/icon="res://icon.svg"
 
 [editor_plugins]

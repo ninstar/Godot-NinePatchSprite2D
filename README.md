@@ -2,7 +2,7 @@
 
 A Node2D that displays a texture by keeping its corners intact, but tiling its edges and center.
 
-<img src="./.assets/example.png" alt="Example" width="100%">
+<img src="./example/screenshot.png" alt="Example" width="100%">
 
 > [!NOTE]
 > Once the add-on is enabled, its documentation can be accessed directly from the Godot IDE (``F1``).
