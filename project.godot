@@ -14,6 +14,7 @@ config/name="NinePatchSprite2D"
 config/description="A Node2D that displays a texture by keeping its corners intact, but tiling its edges and center."
 run/main_scene="res://examples/nine_patch_sprite_2d/scene.tscn"
 config/features=PackedStringArray("4.2")
+config/icon="res://icon.png"
 
 [editor_plugins]
 
