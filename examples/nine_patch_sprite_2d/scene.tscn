@@ -75,10 +75,10 @@ script = ExtResource("1_hdqo7")
 texture = ExtResource("2_ht6g7")
 size = Vector2(256, 384)
 region_rect = Rect2(0, 0, 192, 192)
-patch_margin_left = 32.0
-patch_margin_top = 32.0
-patch_margin_right = 32.0
-patch_margin_bottom = 32.0
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
 
 [node name="Tile" type="Node2D" parent="."]
 texture_filter = 1
@@ -87,10 +87,10 @@ script = ExtResource("1_hdqo7")
 texture = ExtResource("2_ht6g7")
 size = Vector2(256, 384)
 region_rect = Rect2(0, 0, 192, 192)
-patch_margin_left = 32.0
-patch_margin_top = 32.0
-patch_margin_right = 32.0
-patch_margin_bottom = 32.0
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
@@ -101,9 +101,17 @@ script = ExtResource("1_hdqo7")
 texture = ExtResource("2_ht6g7")
 size = Vector2(256, 384)
 region_rect = Rect2(0, 0, 192, 192)
-patch_margin_left = 32.0
-patch_margin_top = 32.0
-patch_margin_right = 32.0
-patch_margin_bottom = 32.0
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+patch_margin_left = 16384
+patch_margin_right = 2
+patch_margin_bottom = 16384

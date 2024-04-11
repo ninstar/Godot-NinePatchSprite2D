@@ -78,36 +78,36 @@ enum AxisStretchMode {
 ## 9-slice's left corners and side will have a width of 16 pixels.
 ## You can set all 4 margin values individually to create
 ## panels with non-uniform borders.
-@export var patch_margin_left: float = 0.0:
+@export var patch_margin_left: int = 0:
 	set(value):
-		patch_margin_left = value
+		patch_margin_left = clampi(value, 0, 16384)
 		set_size(size)
 
 ## The width of the 9-slice's top column. A margin of 16 means the
 ## 9-slice's left corners and side will have a width of 16 pixels.
 ## You can set all 4 margin values individually to create
 ## panels with non-uniform borders.
-@export var patch_margin_top: float = 0.0:
+@export var patch_margin_top: int = 0:
 	set(value):
-		patch_margin_top = value
+		patch_margin_top = clampi(value, 0, 16384)
 		set_size(size)
 
 ## The width of the 9-slice's right column. A margin of 16 means the
 ## 9-slice's left corners and side will have a width of 16 pixels.
 ## You can set all 4 margin values individually to create
 ## panels with non-uniform borders.
-@export var patch_margin_right: float = 0.0:
+@export var patch_margin_right: int = 0:
 	set(value):
-		patch_margin_right = value
+		patch_margin_right = clampi(value, 0, 16384)
 		set_size(size)
 
 ## The width of the 9-slice's bottom column. A margin of 16 means the
 ## 9-slice's left corners and side will have a width of 16 pixels.
 ## You can set all 4 margin values individually to create
 ## panels with non-uniform borders.
-@export var patch_margin_bottom: float = 0.0:
+@export var patch_margin_bottom: int = 0:
 	set(value):
-		patch_margin_bottom = value
+		patch_margin_bottom = clampi(value, 0, 16384)
 		set_size(size)
 
 @export_group("Axis Stretch", "axis_stretch_")
@@ -156,13 +156,13 @@ enum AxisStretchMode {
 func get_patch_margin(margin: Side) -> int:
 	match margin:
 		Side.SIDE_LEFT:
-			return int(patch_margin_left)
+			return patch_margin_left
 		Side.SIDE_TOP:
-			return int(patch_margin_top)
+			return patch_margin_top
 		Side.SIDE_RIGHT:
-			return int(patch_margin_right)
+			return patch_margin_right
 		Side.SIDE_BOTTOM:
-			return int(patch_margin_bottom)
+			return patch_margin_bottom
 		_:
 			return 0
 
@@ -172,13 +172,13 @@ func get_patch_margin(margin: Side) -> int:
 func set_patch_margin(margin: Side, value: int) -> void:
 	match margin:
 		Side.SIDE_LEFT:
-			patch_margin_left = float(value)
+			patch_margin_left = value
 		Side.SIDE_TOP:
-			patch_margin_top = float(value)
+			patch_margin_top = value
 		Side.SIDE_RIGHT:
-			patch_margin_right = float(value)
+			patch_margin_right = value
 		Side.SIDE_BOTTOM:
-			patch_margin_bottom = float(value)
+			patch_margin_bottom = value
 
 #region Virtual methods
 
@@ -223,8 +223,8 @@ func _notification(what: int) -> void:
 			RenderingServer.canvas_item_add_set_transform(canvas_item, trans)
 			RenderingServer.canvas_item_add_nine_patch(canvas_item,
 					to, from, texture.get_rid(), 
-					Vector2(patch_margin_left, patch_margin_top),
-					Vector2(patch_margin_right, patch_margin_bottom),
+					Vector2(float(patch_margin_left), float(patch_margin_top)),
+					Vector2(float(patch_margin_right), float(patch_margin_bottom)),
 					axis_stretch_horizontal, axis_stretch_vertical, draw_center)
 
 #endregion
@@ -296,8 +296,8 @@ func set_texture(value: Texture2D) -> void:
 
 func set_size(value: Vector2) -> void:
 	var current_size: Vector2 = size
-	size.x = maxf(patch_margin_left+patch_margin_right, value.x)
-	size.y = maxf(patch_margin_top+patch_margin_bottom, value.y)
+	size.x = maxf(float(patch_margin_left+patch_margin_right), value.x)
+	size.y = maxf(float(patch_margin_top+patch_margin_bottom), value.y)
 	queue_redraw()
 	if current_size != size:
 		resized.emit()
