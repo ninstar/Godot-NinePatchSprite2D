@@ -229,11 +229,11 @@ func get_region_rect() -> Rect2:
 
 
 func get_h_axis_stretch_mode() -> AxisStretchMode:
-	return axis_stretch_horizontal as AxisStretchMode
+	return axis_stretch_horizontal
 
 
 func get_v_axis_stretch_mode() -> AxisStretchMode:
-	return axis_stretch_vertical as AxisStretchMode
+	return axis_stretch_vertical
 
 
 func is_centered() -> bool:
