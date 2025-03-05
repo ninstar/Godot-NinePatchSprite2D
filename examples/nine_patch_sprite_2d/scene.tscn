@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dlvpd8crpq04g"]
 
-[ext_resource type="Script" path="res://addons/nine_patch_sprite_2d/nine_patch_sprite_2d.gd" id="1_hdqo7"]
+[ext_resource type="Script" uid="uid://c2j1qdkvd1cjs" path="res://addons/nine_patch_sprite_2d/nine_patch_sprite_2d.gd" id="1_hdqo7"]
 [ext_resource type="Texture2D" uid="uid://bgqnar2tyivo1" path="res://examples/nine_patch_sprite_2d/panels.svg" id="2_ht6g7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v6i4f"]

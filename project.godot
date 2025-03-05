@@ -1,13 +1,21 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=5
 
 [application]
 
 config/name="NinePatchSprite2D"
 config/description="A Node2D that displays a texture by keeping its corners intact, but tiling its edges and center."
-run/main_scene="res://examples/nine_patch_sprite_2d/scene.tscn"
-config/features=PackedStringArray("4.2")
-config/icon="res://icon.png"
 config/tags=PackedStringArray("addon")
+run/main_scene="res://examples/nine_patch_sprite_2d/scene.tscn"
+config/features=PackedStringArray("4.4")
+config/icon="res://icon.png"
 
 [editor_plugins]
 
