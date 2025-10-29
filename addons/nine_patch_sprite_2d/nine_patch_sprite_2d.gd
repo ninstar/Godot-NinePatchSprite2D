@@ -14,7 +14,13 @@ class_name NinePatchSprite2D extends Node2D
 ## vertically, tiles the center on both axes, and leaves the corners unchanged.
 
 
-## Emitted when the sprite changes size.
+## Emitted when the [member frame] changes.
+signal frame_changed()
+
+## Emitted when the [member texture] changes.
+signal texture_changed()
+
+## Emitted when the sprite changes [member size].
 signal resized()
 
 
@@ -39,7 +45,7 @@ enum AxisStretchMode {
 @export var texture: Texture2D: get = get_texture, set = set_texture
 
 ## The size of the sprite to be drawn.
-@export var size := Vector2(0.0, 0.0): get = get_size, set = set_size
+@export_custom(PROPERTY_HINT_NONE, "suffix:px") var size := Vector2(0.0, 0.0): get = get_size, set = set_size
 
 ## If [code]true[/code], draw the sprite's center.
 ## Else, only draw 9-slice's borders.
@@ -50,7 +56,7 @@ enum AxisStretchMode {
 ## define the area the 9-slice should use.
 ## All other properties are relative to this one.
 ## If the rect is empty, NinePatchRect will use the whole texture.
-@export var region_rect: Rect2: get = get_region_rect, set = set_region_rect
+@export_custom(PROPERTY_HINT_NONE, "suffix:px") var region_rect: Rect2: get = get_region_rect, set = set_region_rect
 
 @export_group("Patch Margin", "patch_margin_")
 
@@ -58,37 +64,41 @@ enum AxisStretchMode {
 ## 9-slice's left corners and side will have a width of 16 pixels.
 ## You can set all 4 margin values individually to create
 ## panels with non-uniform borders.
-@export var patch_margin_left: int = 0:
+@export_range(0, 16384, 1, "suffix:px") var patch_margin_left: int = 0:
 	set(value):
-		patch_margin_left = clampi(value, 0, 16384)
-		set_size(size)
+		patch_margin_left = value
+		item_rect_changed.emit()
+		queue_redraw()
 
 ## The width of the 9-slice's top column. A margin of 16 means the
 ## 9-slice's left corners and side will have a width of 16 pixels.
 ## You can set all 4 margin values individually to create
 ## panels with non-uniform borders.
-@export var patch_margin_top: int = 0:
+@export_range(0, 16384, 1, "suffix:px") var patch_margin_top: int = 0:
 	set(value):
-		patch_margin_top = clampi(value, 0, 16384)
-		set_size(size)
+		patch_margin_top = value
+		item_rect_changed.emit()
+		queue_redraw()
 
 ## The width of the 9-slice's right column. A margin of 16 means the
 ## 9-slice's left corners and side will have a width of 16 pixels.
 ## You can set all 4 margin values individually to create
 ## panels with non-uniform borders.
-@export var patch_margin_right: int = 0:
+@export_range(0, 16384, 1, "suffix:px") var patch_margin_right: int = 0:
 	set(value):
-		patch_margin_right = clampi(value, 0, 16384)
-		set_size(size)
+		patch_margin_right = value
+		item_rect_changed.emit()
+		queue_redraw()
 
 ## The width of the 9-slice's bottom column. A margin of 16 means the
 ## 9-slice's left corners and side will have a width of 16 pixels.
 ## You can set all 4 margin values individually to create
 ## panels with non-uniform borders.
-@export var patch_margin_bottom: int = 0:
+@export_range(0, 16384, 1, "suffix:px") var patch_margin_bottom: int = 0:
 	set(value):
-		patch_margin_bottom = clampi(value, 0, 16384)
-		set_size(size)
+		patch_margin_bottom = value
+		item_rect_changed.emit()
+		queue_redraw()
 
 @export_group("Axis Stretch", "axis_stretch_")
 
@@ -177,6 +187,7 @@ func _notification(what: int) -> void:
 			
 			# Frame
 			from.position += from.size * Vector2(frame_coords)
+			from.position = from.position.clamp(Vector2.ZERO, texture.get_size() - from.size)
 			
 			# Center the rectangle
 			if centered:
@@ -271,16 +282,19 @@ func get_frame_coords() -> Vector2i:
 
 func set_texture(value: Texture2D) -> void:
 	texture = value
+	
+	texture_changed.emit()
+	item_rect_changed.emit()
 	queue_redraw()
 
 
 func set_size(value: Vector2) -> void:
-	var current_size: Vector2 = size
 	size.x = maxf(float(patch_margin_left+patch_margin_right), value.x)
 	size.y = maxf(float(patch_margin_top+patch_margin_bottom), value.y)
+	
+	item_rect_changed.emit()
+	resized.emit()
 	queue_redraw()
-	if current_size != size:
-		resized.emit()
 
 
 func set_draw_center(value: bool) -> void:
@@ -290,6 +304,8 @@ func set_draw_center(value: bool) -> void:
 
 func set_region_rect(value: Rect2) -> void:
 	region_rect = value
+	
+	item_rect_changed.emit()
 	queue_redraw()
 
 
@@ -305,11 +321,15 @@ func set_v_axis_stretch_mode(value: AxisStretchMode) -> void:
 
 func set_centered(value: bool) -> void:
 	centered = value
+	
+	item_rect_changed.emit()
 	queue_redraw()
 
 
 func set_offset(value: Vector2) -> void:
 	offset = value
+	
+	item_rect_changed.emit()
 	queue_redraw()
 
 
@@ -325,35 +345,39 @@ func set_flip_v(value: bool) -> void:
 
 func set_hframes(value: int) -> void:
 	hframes = maxi(1, value)
-	if frame > hframes + vframes - 1:
-		set_frame(frame)
-	else:
-		queue_redraw()
+	set_frame(frame)
 
 
 func set_vframes(value: int) -> void:
 	vframes = maxi(1, value)
-	if frame > hframes + vframes - 1:
-		set_frame(frame)
-	else:
-		queue_redraw()
+	set_frame(frame)
 
 
 func set_frame(value: int) -> void:
 	frame = clampi(value, 0, hframes * vframes - 1)
+	
 	var as_vec := Vector2i(frame % hframes, ceili(frame/hframes))
 	if frame_coords != as_vec:
 		set_frame_coords(as_vec)
-	else:
-		queue_redraw()
+		notify_property_list_changed()
+		return
+	
+	item_rect_changed.emit()
+	frame_changed.emit()
+	queue_redraw()
 
 
 func set_frame_coords(value: Vector2i) -> void:
 	frame_coords = value.clamp(Vector2i.ZERO, Vector2i(hframes-1, vframes-1))
+	
 	var as_int: int = frame_coords.x + (frame_coords.y * hframes)
 	if frame != as_int:
 		set_frame(as_int)
-	else:
-		queue_redraw()
+		notify_property_list_changed()
+		return
+	
+	item_rect_changed.emit()
+	frame_changed.emit()
+	queue_redraw()
 
 #endregion
