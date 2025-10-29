@@ -45,18 +45,21 @@ enum AxisStretchMode {
 @export var texture: Texture2D: get = get_texture, set = set_texture
 
 ## The size of the sprite to be drawn.
-@export_custom(PROPERTY_HINT_NONE, "suffix:px") var size := Vector2(0.0, 0.0): get = get_size, set = set_size
+@export_custom(PROPERTY_HINT_NONE, "suffix:px") var size := Vector2(0.0, 0.0):
+	get = get_size, set = set_size
 
 ## If [code]true[/code], draw the sprite's center.
 ## Else, only draw 9-slice's borders.
-@export var draw_center: bool = true: get = is_draw_center_enabled, set = set_draw_center
+@export var draw_center: bool = true:
+	get = is_draw_center_enabled, set = set_draw_center
 
 ## Rectangular region of the texture to sample from.
 ## If you're working with an atlas, use this property to
 ## define the area the 9-slice should use.
 ## All other properties are relative to this one.
 ## If the rect is empty, NinePatchRect will use the whole texture.
-@export_custom(PROPERTY_HINT_NONE, "suffix:px") var region_rect: Rect2: get = get_region_rect, set = set_region_rect
+@export_custom(PROPERTY_HINT_NONE, "suffix:px") var region_rect: Rect2:
+	get = get_region_rect, set = set_region_rect
 
 @export_group("Patch Margin", "patch_margin_")
 
@@ -104,42 +107,52 @@ enum AxisStretchMode {
 
 ## The stretch mode to use for horizontal stretching/tiling.
 ## See [enum NinePatchSprite2D.AxisStretchMode] for possible values.
-@export_enum("Stretch", "Tile", "Tile Fit") var axis_stretch_horizontal: int = 0: get = get_h_axis_stretch_mode, set = set_h_axis_stretch_mode
+@export_enum("Stretch", "Tile", "Tile Fit") var axis_stretch_horizontal: int = 0:
+	get = get_h_axis_stretch_mode, set = set_h_axis_stretch_mode
 
 ## The stretch mode to use for vertical stretching/tiling.
 ## See [enum NinePatchSprite2D.AxisStretchMode] for possible values.
-@export_enum("Stretch", "Tile", "Tile Fit") var axis_stretch_vertical: int = 0: get = get_v_axis_stretch_mode, set = set_v_axis_stretch_mode
+@export_enum("Stretch", "Tile", "Tile Fit") var axis_stretch_vertical: int = 0:
+	get = get_v_axis_stretch_mode, set = set_v_axis_stretch_mode
 
 @export_group("Offset")
 
 ## If [code]true[/code], texture is centered.
-@export var centered: bool = true: get = is_centered, set = set_centered
+@export var centered: bool = true:
+	get = is_centered, set = set_centered
 
 ## The texture's drawing offset.
-@export var offset := Vector2.ZERO: get = get_offset, set = set_offset
+@export var offset := Vector2.ZERO:
+	get = get_offset, set = set_offset
 
 ## If [code]true[/code], texture is flipped horizontally.
-@export var flip_h: bool = false: get = is_flipped_h, set = set_flip_h
+@export var flip_h: bool = false:
+	get = is_flipped_h, set = set_flip_h
 
 ## If [code]true[/code], texture is flipped vertically.
-@export var flip_v: bool = false: get = is_flipped_v, set = set_flip_v
+@export var flip_v: bool = false:
+	get = is_flipped_v, set = set_flip_v
 
 @export_group("Animation")
 
 ## The number of columns in the sprite sheet.
-@export var hframes: int = 1: get = get_hframes, set = set_hframes
+@export var hframes: int = 1:
+	get = get_hframes, set = set_hframes
 
 ## The number of rows in the sprite sheet.
-@export var vframes: int = 1: get = get_vframes, set = set_vframes
+@export var vframes: int = 1:
+	get = get_vframes, set = set_vframes
 
 ## Current frame to display from sprite sheet.
 ## [member hframes] or [member vframes] must be greater than 1.
-@export var frame: int = 0: get = get_frame, set = set_frame
+@export var frame: int = 0:
+	get = get_frame, set = set_frame
 
 ## Coordinates of the frame to display from sprite sheet.
 ## This is as an alias for the [member frame] property.
 ## [member hframes] or [member vframes] must be greater than 1.
-@export var frame_coords := Vector2i.ZERO: get = get_frame_coords, set = set_frame_coords
+@export var frame_coords := Vector2i.ZERO:
+	get = get_frame_coords, set = set_frame_coords
 
 
 ## Returns the size of the margin on the specified [enum @GlobalScope.Side].
@@ -171,7 +184,6 @@ func set_patch_margin(margin: Side, value: int) -> void:
 			patch_margin_bottom = value
 
 #region Virtual methods
-
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_DRAW:
@@ -217,12 +229,9 @@ func _notification(what: int) -> void:
 					Vector2(float(patch_margin_left), float(patch_margin_top)),
 					Vector2(float(patch_margin_right), float(patch_margin_bottom)),
 					axis_stretch_horizontal, axis_stretch_vertical, draw_center)
-
 #endregion
-#region Getters & Setters
 
-# Getters
-
+#region Getters
 func get_texture() -> Texture2D:
 	return texture
 
@@ -277,9 +286,9 @@ func get_frame() -> int:
 
 func get_frame_coords() -> Vector2i:
 	return frame_coords
+#endregion
 
-# Setters
-
+#region Setters
 func set_texture(value: Texture2D) -> void:
 	texture = value
 	
@@ -379,5 +388,4 @@ func set_frame_coords(value: Vector2i) -> void:
 	item_rect_changed.emit()
 	frame_changed.emit()
 	queue_redraw()
-
 #endregion
