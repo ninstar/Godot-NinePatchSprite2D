@@ -56,8 +56,9 @@ enum AxisStretchMode {
 ## Rectangular region of the texture to sample from.
 ## If you're working with an atlas, use this property to
 ## define the area the 9-slice should use.
-## All other properties are relative to this one.
-## If the rect is empty, NinePatchRect will use the whole texture.
+## All other properties are relative to this one.[br][br]
+## If the rect is empty, NinePatchSprite2D will use the whole texture
+## divided by the number of [member hframe] and [member vframes].
 @export_custom(PROPERTY_HINT_NONE, "suffix:px") var region_rect: Rect2:
 	get = get_region_rect, set = set_region_rect
 
@@ -186,6 +187,10 @@ func set_patch_margin(margin: Side, value: int) -> void:
 #region Virtual methods
 func _notification(what: int) -> void:
 	match what:
+		NOTIFICATION_READY:
+			# Automatic redraw
+			item_rect_changed.connect(queue_redraw)
+			
 		NOTIFICATION_DRAW:
 			# Return if there is no texture to draw
 			if texture == null:
@@ -198,6 +203,9 @@ func _notification(what: int) -> void:
 			var to := Rect2(Vector2.ZERO, size)
 			
 			# Frame
+			if from.size == Vector2.ZERO:
+				from.size = texture.get_size() / Vector2(hframes, vframes)
+			
 			from.position += from.size * Vector2(frame_coords)
 			from.position = from.position.clamp(Vector2.ZERO, texture.get_size() - from.size)
 			
@@ -294,7 +302,6 @@ func set_texture(value: Texture2D) -> void:
 	
 	texture_changed.emit()
 	item_rect_changed.emit()
-	queue_redraw()
 
 
 func set_size(value: Vector2) -> void:
@@ -303,7 +310,6 @@ func set_size(value: Vector2) -> void:
 	
 	item_rect_changed.emit()
 	resized.emit()
-	queue_redraw()
 
 
 func set_draw_center(value: bool) -> void:
@@ -313,9 +319,7 @@ func set_draw_center(value: bool) -> void:
 
 func set_region_rect(value: Rect2) -> void:
 	region_rect = value
-	
 	item_rect_changed.emit()
-	queue_redraw()
 
 
 func set_h_axis_stretch_mode(value: AxisStretchMode) -> void:
@@ -330,16 +334,12 @@ func set_v_axis_stretch_mode(value: AxisStretchMode) -> void:
 
 func set_centered(value: bool) -> void:
 	centered = value
-	
 	item_rect_changed.emit()
-	queue_redraw()
 
 
 func set_offset(value: Vector2) -> void:
 	offset = value
-	
 	item_rect_changed.emit()
-	queue_redraw()
 
 
 func set_flip_h(value: bool) -> void:
@@ -373,7 +373,6 @@ func set_frame(value: int) -> void:
 	
 	item_rect_changed.emit()
 	frame_changed.emit()
-	queue_redraw()
 
 
 func set_frame_coords(value: Vector2i) -> void:
@@ -387,5 +386,4 @@ func set_frame_coords(value: Vector2i) -> void:
 	
 	item_rect_changed.emit()
 	frame_changed.emit()
-	queue_redraw()
 #endregion
